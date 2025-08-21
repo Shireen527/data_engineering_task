@@ -5,7 +5,7 @@ from loguru import logger
 from config import Config
 import time
 from functools import wraps
-
+from datetime import datetime
 
 def retry(max_retries=3):
     def decorator(func):
@@ -60,7 +60,7 @@ class DatabaseManager:
         for col in columns:
             if col not in df.columns:
                 df[col] = None
-        
+        df['ingested_at'] = datetime.now()
         tuples = [tuple(x) for x in df[columns].to_numpy()]
 
         query = f"""INSERT INTO {self.RAW_TABLE} ({', '.join(columns)}) VALUES %s"""

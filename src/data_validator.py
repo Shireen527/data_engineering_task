@@ -9,7 +9,8 @@ def validate_file(file_path):
 
     missing_cols = [c for c in Config.REQUIRED_FIELDS if c not in df.columns]
     if missing_cols:
-        quarantine_file = f"quarantine/quarantine_{file_name}"
+        os.makedirs(Config.QUARANTINE_FOLDER, exist_ok=True)
+        quarantine_file = os.path.join(Config.QUARANTINE_FOLDER, f"quarantine_{file_name}")
         df.to_csv(quarantine_file, index=False)
         logger.error(f"{file_name}: missing required columns: {missing_cols}. Quarantined entire file: {quarantine_file}")
         return pd.DataFrame()
@@ -37,7 +38,7 @@ def validate_file(file_path):
         df['machine_status'] = pd.to_numeric(df['machine_status'], errors='coerce').fillna(-1).astype(int)
  
 
-    null_mask = df[Config.REQUIRED_FIELDS].isnull().any(axis=1)  #dropping if null values in key fields
+    null_mask = df[Config.REQUIRED_FIELDS].isnull().any(axis=1)
     null_mask_copy = null_mask.copy()
     duplicate_mask = df.duplicated(subset=['machine_id', 'timestamp'], keep='first')
     
@@ -57,8 +58,8 @@ def validate_file(file_path):
     
     # Quarantine invalid data
     if not invalid_df.empty:
-        os.makedirs('quarantine', exist_ok=True)
-        quarantine_file = f"quarantine/quarantine_{file_name}"
+        os.makedirs(Config.QUARANTINE_FOLDER, exist_ok=True)
+        quarantine_file = os.path.join(Config.QUARANTINE_FOLDER, f"quarantine_{file_name}")
         invalid_df.to_csv(quarantine_file, index=False)
 
         error_counts = {

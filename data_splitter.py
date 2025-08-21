@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from src.config import Config
+import sys
 
 def introduce_missing_values(df, missing_rate=0.02, seed=42):
     np.random.seed(seed)
@@ -54,4 +55,5 @@ def split_csv(input_file, output_folder=Config.DATA_FOLDER, split_minutes=Config
         print(f"Created {filename} , {len(group_df)} rows")
 
 if __name__ == "__main__":
-    split_csv("archive\smart_manufacturing_data.csv")
+    input_path = sys.argv[1] if len(sys.argv) > 1 else "archive/smart_manufacturing_data.csv"
+    split_csv(input_path)

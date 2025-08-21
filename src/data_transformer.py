@@ -3,8 +3,10 @@ import numpy as np
 from datetime import datetime
 from loguru import logger
 from config import Config
+import os
 
 def transform_and_aggregate(df, file_name):
+    file_name = os.path.basename(file_name)
     logger.info(f"Starting transformation for {file_name}")
     if df.empty:
         logger.warning(f"Empty dataframe for {file_name}, no aggregation performed")
