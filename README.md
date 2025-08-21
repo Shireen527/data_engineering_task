@@ -69,6 +69,9 @@ Show first 10 aggregates:
    Run the schema:
    `psql -U postgres -d sensor_pipeline -f schema.sql`
 
+   Verify:
+   `psql -U postgres -d sensor_pipeline -c "\dt"`
+
 4. Configure environment variables
 
    Create a `.env` file in the project root (or set env vars in your shell):
