@@ -2,7 +2,7 @@ import psycopg2
 from psycopg2.extras import execute_values
 import pandas as pd
 from loguru import logger
-from config import Config
+from src.config import Config
 import time
 from functools import wraps
 from datetime import datetime

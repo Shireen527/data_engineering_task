@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from loguru import logger
-from config import Config
+from src.config import Config
 import os
 
 def transform_and_aggregate(df, file_name):

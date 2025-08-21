@@ -1,7 +1,7 @@
 from loguru import logger
 import pandas as pd
 import os
-from config import Config
+from src.config import Config
 
 def validate_file(file_path):
     df = pd.read_csv(file_path)

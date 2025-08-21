@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: sensor_pipeline
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+
+  pipeline:
+    build: .
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./quarantine:/app/quarantine
+      - ./logs:/app/logs
+      - ./archive:/app/archive
+    command: python -m src.file_watcher
+
+volumes:
+  pgdata:

@@ -4,10 +4,10 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
-from data_validator import validate_file
-from data_transformer import transform_and_aggregate
-from database_manager import DatabaseManager, get_db_config
-from config import Config
+from src.data_validator import validate_file
+from src.data_transformer import transform_and_aggregate
+from src.database_manager import DatabaseManager, get_db_config
+from src.config import Config
 from loguru import logger
 
 logger.add(Config.LOG_FILE, rotation="10 MB", retention="5 days", compression="zip")
