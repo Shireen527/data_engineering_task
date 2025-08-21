@@ -28,12 +28,14 @@ Docker Desktop installed and running.
 Show first 10 raw rows:
 
 ```
-docker compose exec postgres psql -U postgres -d sensor_pipeline -c "SELECT \* FROM raw_sensor_data ORDER BY ingested_at DESC LIMIT 10;"
+docker compose exec postgres psql -U postgres -d sensor_pipeline -c "SELECT * FROM raw_sensor_data ORDER BY ingested_at DESC LIMIT 10;"
 ```
 
 Show first 10 aggregates:
 
-`docker compose exec postgres psql -U postgres -d sensor_pipeline -c "SELECT \* FROM sensor_aggregates ORDER BY processed_at DESC LIMIT 10;"`
+```docker compose exec postgres psql -U postgres -d sensor_pipeline -c "SELECT * FROM sensor_aggregates ORDER BY processed_at DESC LIMIT 10;"
+
+```
 
 ### Optional: generate more files
 
@@ -65,7 +67,7 @@ Show first 10 aggregates:
    `psql -U postgres -c "CREATE DATABASE sensor_pipeline;"`
 
    Run the schema:
-   `psql -U postgres -d sensors -f schema.sql`
+   `psql -U postgres -d sensor_pipeline -f schema.sql`
 
 4. Configure environment variables
 
@@ -74,9 +76,9 @@ Show first 10 aggregates:
    ```
    DB_HOST=localhost
    DB_PORT=5432
-   DB_NAME=sensors
+   DB_NAME=sensor_pipeline
    DB_USER=postgres
-   DB_PASSWORD=postgres
+   DB_PASSWORD=<your_password_here>
    ```
 
 5. To split dataset: `python -m src.data_splitter`
