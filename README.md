@@ -1,45 +1,7 @@
 ## Table of Contents
 
-- [Run with Docker](#run-with-docker)
 - [Setup and Run Locally](#setup-and-run-locally)
-
-## Run with Docker
-
-### Prerequisites
-
-Docker Desktop installed and running.
-
-### Steps:
-
-1.  Clone the repo.
-    From the project folder start services:
-    `docker compose up --build`
-
-2.  Copy the provided files from test_files/ folder into the data/ folder (both folders present in project root).
-
-    The watcher will detect and process them automatically.
-
-### To follow logs:
-
-`docker compose logs -f pipeline`
-
-### To View results in Postgres
-
-Show first 10 raw rows:
-
-```
-docker compose exec postgres psql -U postgres -d sensor_pipeline -c "SELECT * FROM raw_sensor_data ORDER BY ingested_at DESC LIMIT 10;"
-```
-
-Show first 10 aggregates:
-
-```docker compose exec postgres psql -U postgres -d sensor_pipeline -c "SELECT * FROM sensor_aggregates ORDER BY processed_at DESC LIMIT 10;"
-
-```
-
-### Optional: generate more files
-
-`docker compose run --rm pipeline python /app/data_splitter.py`
+- [Run with Docker](#run-with-docker)
 
 ## Setup and Run Locally
 
@@ -84,9 +46,50 @@ Show first 10 aggregates:
    DB_PASSWORD=<your_password_here>
    ```
 
-5. To split dataset: `python -m src.data_splitter`
+5. Run the file watcher to start the pipeline
+   :`python -m src.file_watcher`
+
+6. Monitoring starts. add the files in 'test_data' to 'data' folder and check database.
+
+7. Optional: To split dataset: `python -m src.data_splitter`
 
    (Split size an be changed in src/config.py via SPLIT_MINUTES.)
 
-6. Run the file watcher to start the pipeline
-   :`python -m src.file_watcher`
+## Run with Docker
+
+### Prerequisites
+
+Docker Desktop installed and running.
+
+### Steps:
+
+1.  Clone the repo.
+    From the project folder start services:
+    `docker compose up --build`
+
+2.  Copy the provided files from test_files/ folder into the data/ folder (both folders present in project root).
+
+    The watcher will detect and process them automatically.
+
+### To follow logs:
+
+`docker compose logs -f pipeline`
+
+### To View results in Postgres
+
+Show first 10 raw rows:
+
+```
+docker compose exec postgres psql -U postgres -d sensor_pipeline -c "SELECT * FROM raw_sensor_data ORDER BY ingested_at DESC LIMIT 10;"
+```
+
+Show first 10 aggregates:
+
+```
+docker compose exec postgres psql -U postgres -d sensor_pipeline -c "SELECT * FROM sensor_aggregates ORDER BY processed_at DESC LIMIT 10;"
+
+```
+
+### Optional: generate more files
+
+`docker compose run --rm pipeline python /app/data_splitter.py`
